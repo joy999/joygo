@@ -1,6 +1,7 @@
 package types
 
 import (
+	"encoding/json"
 	"strconv"
 )
 
@@ -57,10 +58,18 @@ func (this Int32) ToBool() Bool {
 	}
 	return Bool(b)
 }
-func (this Int32) ToJSON() JSON {
-	return JSON(this.ToInt64())
+func (this Int32) ToJSON() *JSON {
+	return &JSON{this.ToInt64()}
 }
 
 func (this Int32) ToString() String {
 	return String(strconv.FormatInt(this.ToInt64().ToNative(), 32))
+}
+
+func (this Int32) ToJSONString() (String, error) {
+	if bs, err := json.Marshal(this); err == nil {
+		return String(bs), nil
+	} else {
+		return "", err
+	}
 }

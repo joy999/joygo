@@ -36,15 +36,21 @@ type Bool bool
 
 type String string
 
-type JSON Any
+type JSON struct {
+	Any
+}
 
 type Array []Any
 
 type StringArray []String
 
-type JSONMap map[String]JSON
+type JSONMap map[String]Any
 
-type JSONArray []JSON
+type JSONArray Array
+
+type JSONString struct {
+	String
+}
 
 type Number interface {
 	ToInt64() Int64

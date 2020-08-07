@@ -8,12 +8,14 @@ import (
 	"strings"
 	"time"
 
+	"encoding/json"
+
 	"github.com/joy999/mahonia"
 )
 
 //新创建一个空的String对象指针
-func NewString() String {
-	var str String = ""
+func NewString(s string) String {
+	var str String = String(s)
 	return str
 }
 
@@ -52,8 +54,8 @@ func (str String) ToBytes() []byte {
 /**
 检查是否符合正则
 */
-func (str String) Match(pattern string) bool {
-	m, err := regexp.MatchString(pattern, string(str))
+func (str String) Match(pattern String) bool {
+	m, err := regexp.MatchString(string(pattern), string(str))
 	if err != nil {
 		log.Fatal(err.Error())
 	}
@@ -61,8 +63,8 @@ func (str String) Match(pattern string) bool {
 }
 
 //获取符合正则的字符串
-func (str String) MatchFind(pattern string) []String {
-	reg, err := regexp.Compile(pattern)
+func (str String) MatchFind(pattern String) []String {
+	reg, err := regexp.Compile(string(pattern))
 	if err != nil {
 		log.Fatal(err.Error())
 	}
@@ -124,20 +126,42 @@ func (str String) UTF8ToGBK() String {
 	return String(_c)
 }
 
-func (str String) ToInt() int {
-	i, err := strconv.Atoi(string(str))
+func (str String) ToInt() Int {
+	arr := str.Explode(".")
+	i, err := strconv.Atoi(string(arr[0]))
 	if err != nil {
+		log.Fatalln(err)
 		i = 0
 	}
-	return i
+	return Int(i)
 }
 
-func (str String) ToInt64() int64 {
-	i, err := strconv.ParseInt(str.ToNative(), 10, 64)
+func (str String) ToInt64() Int64 {
+	arr := str.Explode(".")
+	i, err := strconv.ParseInt(arr[0].ToNative(), 10, 64)
 	if err != nil {
 		i = 0
 	}
-	return i
+	return Int64(i)
+}
+
+func (str String) ToUInt64() UInt64 {
+	arr := str.Explode(".")
+	i, err := strconv.ParseUint(arr[0].ToNative(), 10, 64)
+
+	if err != nil {
+		i = 0
+	}
+	return UInt64(i)
+}
+
+func (str String) ToFloat64() Float64 {
+	i, err := strconv.ParseFloat(str.ToNative(), 64)
+
+	if err != nil {
+		i = 0
+	}
+	return Float64(i)
 }
 
 func (str String) Explode(sep string) StringArray {
@@ -158,6 +182,7 @@ func (this String) TrimSpace() String {
 }
 
 func (this String) ToUnixLocalTimeStamp(format string) int64 {
+
 	fs := String(format)
 	fs = fs.MatchReplace("Y", "2006")
 	fs = fs.MatchReplace("m", "01")
@@ -167,6 +192,18 @@ func (this String) ToUnixLocalTimeStamp(format string) int64 {
 	fs = fs.MatchReplace("s", "05")
 	stamp, _ := time.ParseInLocation(fs.ToNative(), this.ToNative(), time.Local)
 	return stamp.Unix()
+}
+
+func (this String) ToJson() *JSON {
+	return &JSON{this}
+}
+
+func (this String) ToJSONString() (String, error) {
+	if bs, err := json.Marshal(this); err != nil {
+		return "", err
+	} else {
+		return String(bs), err
+	}
 }
 
 func doGBKToUTF8(inputStr string) string {

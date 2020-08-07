@@ -1,5 +1,9 @@
 package types
 
+import (
+	"encoding/json"
+)
+
 func NewBool() Bool {
 	return Bool(false)
 }
@@ -104,8 +108,8 @@ func (this Bool) ToBool() Bool {
 	return this
 }
 
-func (this Bool) ToJSON() JSON {
-	return JSON(this)
+func (this Bool) ToJSON() *JSON {
+	return &JSON{this}
 }
 
 func (this Bool) ToString() String {
@@ -113,5 +117,13 @@ func (this Bool) ToString() String {
 		return "true"
 	} else {
 		return "false"
+	}
+}
+
+func (this Bool) ToJSONString() (String, error) {
+	if bs, err := json.Marshal(this); err == nil {
+		return String(bs), nil
+	} else {
+		return "", err
 	}
 }
