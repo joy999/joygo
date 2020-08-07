@@ -4,14 +4,14 @@ import (
 	"testing"
 )
 
-func Test_Push(t *testing.T) {
+func Test_JSONArrayPush(t *testing.T) {
 	arr := NewJSONArray()
 	arr.Push(123)
 	arr.Push("123")
 
 }
 
-func Test_ToJSONString(t *testing.T) {
+func Test_JSONArrayToJSONString(t *testing.T) {
 	arr := NewJSONArray()
 	arr.Push(123)
 	arr.Push("123")
@@ -27,7 +27,7 @@ func Test_ToJSONString(t *testing.T) {
 	}
 }
 
-func Test_IndexOf(t *testing.T) {
+func Test_JSONArrayIndexOf(t *testing.T) {
 	arr := NewJSONArray()
 	arr.Push(123)
 	arr.Push("123")

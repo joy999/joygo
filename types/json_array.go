@@ -49,8 +49,8 @@ func (this *JSONArray) RemoveItem(item Any) {
 	this.Remove(index)
 }
 
-func (this JSONArray) ToJSON() *JSON {
-	return &JSON{this}
+func (this JSONArray) ToJSON() JSON {
+	return JSON{this}
 }
 
 // ToJSONString 转为json格式字符串
@@ -60,4 +60,11 @@ func (this JSONArray) ToJSONString() (String, error) {
 	} else {
 		return String(bs), nil
 	}
+}
+
+func (this JSONArray) GetAsJSON(idx Int) *JSON {
+	if idx < 0 || idx >= this.GetLength() {
+		return nil
+	}
+	return &JSON{this[idx]}
 }
