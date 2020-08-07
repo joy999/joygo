@@ -281,72 +281,76 @@ func AnyToJSONArray(any Any) JSONArray {
 }
 
 func AnyToJSONMap(any Any) JSONMap {
+	return *AnyToJSONMapPtr(any)
+}
+
+func AnyToJSONMapPtr(any Any) *JSONMap {
 	switch value := any.(type) {
 	case *JSONMap:
-		return *value
+		return value
 	case *map[String]JSON:
 		ret := make(JSONMap, 0)
 		for k, v := range *value {
 			ret[k] = v.Any
 		}
-		return ret
+		return &ret
 	case *map[String]*JSON:
 		ret := make(JSONMap, 0)
 		for k, v := range *value {
 			ret[k] = v.Any
 		}
-		return ret
+		return &ret
 	case JSONMap:
-		return value
+		return &value
 	case map[String]JSON:
 		ret := make(JSONMap, 0)
 		for k, v := range value {
 			ret[k] = v.Any
 		}
-		return ret
+		return &ret
 	case map[String]*JSON:
 		ret := make(JSONMap, 0)
 		for k, v := range value {
 			ret[k] = v.Any
 		}
-		return ret
+		return &ret
 	case *map[string]interface{}:
 		ret := make(JSONMap, 0)
 		for k, v := range *value {
 			ret[String(k)] = Any(v)
 		}
-		return ret
+		return &ret
 	case map[string]JSON:
 		ret := make(JSONMap, 0)
 		for k, v := range value {
 			ret[String(k)] = v.Any
 		}
-		return ret
+		return &ret
 	case map[string]*JSON:
 		ret := make(JSONMap, 0)
 		for k, v := range value {
 			ret[String(k)] = v.Any
 		}
-		return ret
+		return &ret
 	case *map[string]JSON:
 		ret := make(JSONMap, 0)
 		for k, v := range *value {
 			ret[String(k)] = v.Any
 		}
-		return ret
+		return &ret
 	case *map[string]*JSON:
 		ret := make(JSONMap, 0)
 		for k, v := range *value {
 			ret[String(k)] = v.Any
 		}
-		return ret
+		return &ret
 	case map[string]interface{}:
 		ret := make(JSONMap, 0)
 		for k, v := range value {
 			ret[String(k)] = Any(v)
 		}
-		return ret
+		return &ret
 	default:
-		return JSONMap{}
+		return &JSONMap{}
 	}
 }

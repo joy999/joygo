@@ -72,6 +72,10 @@ func (this JSON) ToJSONMap() JSONMap {
 	return AnyToJSONMap(this.Any)
 }
 
+func (this JSON) ToJSONMapPtr() *JSONMap {
+	return AnyToJSONMapPtr(this.Any)
+}
+
 func (this JSON) ToJSONString() (String, error) {
 	if bs, err := json.Marshal(this.Any); err == nil {
 		return String(bs), nil
