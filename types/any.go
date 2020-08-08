@@ -117,6 +117,10 @@ func AnyToFloat64(any Any) Float64 {
 	}
 }
 
+func AnyToUInt(any) UInt {
+	return UInt(AnyToUInt64(any))
+}
+
 func AnyToUInt64(any Any) UInt64 {
 	switch v := any.(type) {
 	case Int:
@@ -173,6 +177,10 @@ func AnyToUInt64(any Any) UInt64 {
 	default:
 		return UInt64(0)
 	}
+}
+
+func AnyToInt(any Any) Int {
+	return Int(AnyToInt64(any))
 }
 
 func AnyToInt64(any Any) Int64 {
