@@ -117,7 +117,7 @@ func AnyToFloat64(any Any) Float64 {
 	}
 }
 
-func AnyToUInt(any) UInt {
+func AnyToUInt(any Any) UInt {
 	return UInt(AnyToUInt64(any))
 }
 
