@@ -38,7 +38,7 @@ func (this Float32) ToUInt8() UInt8 {
 	return UInt8(this)
 }
 func (this Float32) ToFloat64() Float64 {
-	return Float64(this)
+	return this.ToString().ToFloat64()
 }
 func (this Float32) ToFloat32() Float32 {
 	return Float32(this)
@@ -64,7 +64,7 @@ func (this Float32) ToJSON() *JSON {
 }
 
 func (this Float32) ToString() String {
-	return String(strconv.FormatFloat(this.ToFloat64().ToNative(), 'E', -1, 32))
+	return String(strconv.FormatFloat(Float64(this).ToNative(), 'f', -1, 32))
 }
 
 func (this Float32) ToJSONString() (String, error) {

@@ -64,7 +64,7 @@ func (this Float64) ToJSON() *JSON {
 }
 
 func (this Float64) ToString() String {
-	return String(strconv.FormatFloat(this.ToNative(), 'E', -1, 64))
+	return String(strconv.FormatFloat(this.ToNative(), 'f', -1, 64))
 }
 
 func (this Float64) ToJSONString() (String, error) {

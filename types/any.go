@@ -1,5 +1,7 @@
 package types
 
+import "fmt"
+
 func AnyToString(any Any) String {
 	switch value := any.(type) {
 	case Int:
@@ -11,6 +13,8 @@ func AnyToString(any Any) String {
 	case Int32:
 		return value.ToString()
 	case Int64:
+		return value.ToString()
+	case UInt:
 		return value.ToString()
 	case UInt8:
 		return value.ToString()
@@ -28,7 +32,32 @@ func AnyToString(any Any) String {
 		return value.ToString()
 	case String:
 		return value
-
+	case Bytes:
+		return value.ToString()
+	case *JSON:
+		if v, err := value.ToJSONString(); err == nil {
+			return v
+		} else {
+			return ""
+		}
+	case JSON:
+		if v, err := value.ToJSONString(); err == nil {
+			return v
+		} else {
+			return ""
+		}
+	case JSONArray:
+		if v, err := value.ToJSONString(); err == nil {
+			return v
+		} else {
+			return ""
+		}
+	case JSONMap:
+		if v, err := value.ToJSONString(); err == nil {
+			return v
+		} else {
+			return ""
+		}
 	case int:
 		return Int(value).ToString()
 	case int8:
@@ -39,6 +68,8 @@ func AnyToString(any Any) String {
 		return Int32(value).ToString()
 	case int64:
 		return Int64(value).ToString()
+	case uint:
+		return UInt(value).ToString()
 	case uint8:
 		return UInt8(value).ToString()
 	case uint16:
@@ -53,8 +84,12 @@ func AnyToString(any Any) String {
 		return Float64(value).ToString()
 	case string:
 		return String(value)
-	default:
+	case []byte:
+		return String(value)
+	case nil:
 		return String("")
+	default:
+		return String(fmt.Sprintf("%T", value))
 	}
 }
 
@@ -70,6 +105,8 @@ func AnyToFloat64(any Any) Float64 {
 		return Float64(value)
 	case Int64:
 		return Float64(value)
+	case UInt:
+		return Float64(value)
 	case UInt8:
 		return Float64(value)
 	case UInt16:
@@ -81,12 +118,13 @@ func AnyToFloat64(any Any) Float64 {
 	case Float:
 		return Float64(value)
 	case Float32:
-		return Float64(value)
+		return value.ToFloat64()
 	case Float64:
 		return Float64(value)
 	case String:
 		return value.ToFloat64()
-
+	case Bytes:
+		return value.ToString().ToFloat64()
 	case int:
 		return Float64(value)
 	case int8:
@@ -96,6 +134,8 @@ func AnyToFloat64(any Any) Float64 {
 	case int32:
 		return Float64(value)
 	case int64:
+		return Float64(value)
+	case uint:
 		return Float64(value)
 	case uint8:
 		return Float64(value)
@@ -107,7 +147,7 @@ func AnyToFloat64(any Any) Float64 {
 		return Float64(value)
 
 	case float32:
-		return Float64(value)
+		return Float32(value).ToString().ToFloat64()
 	case float64:
 		return Float64(value)
 	case string:
@@ -124,14 +164,31 @@ func AnyToUInt(any Any) UInt {
 func AnyToUInt64(any Any) UInt64 {
 	switch v := any.(type) {
 	case Int:
+		if v < 0 {
+			v = 0
+		}
 		return UInt64(v)
 	case Int8:
+		if v < 0 {
+			v = 0
+		}
 		return UInt64(v)
 	case Int16:
+		if v < 0 {
+			v = 0
+		}
 		return UInt64(v)
 	case Int32:
+		if v < 0 {
+			v = 0
+		}
 		return UInt64(v)
 	case Int64:
+		if v < 0 {
+			v = 0
+		}
+		return UInt64(v)
+	case UInt:
 		return UInt64(v)
 	case UInt8:
 		return UInt64(v)
@@ -142,22 +199,48 @@ func AnyToUInt64(any Any) UInt64 {
 	case UInt64:
 		return UInt64(v)
 	case Float:
+		if v < 0 {
+			v = 0
+		}
 		return UInt64(v)
 	case Float32:
+		if v < 0 {
+			v = 0
+		}
 		return UInt64(v)
 	case Float64:
+		if v < 0 {
+			v = 0
+		}
 		return UInt64(v)
 	case String:
 		return v.ToUInt64()
 	case int:
+		if v < 0 {
+			v = 0
+		}
 		return UInt64(v)
 	case int8:
+		if v < 0 {
+			v = 0
+		}
 		return UInt64(v)
 	case int16:
+		if v < 0 {
+			v = 0
+		}
 		return UInt64(v)
 	case int32:
+		if v < 0 {
+			v = 0
+		}
 		return UInt64(v)
 	case int64:
+		if v < 0 {
+			v = 0
+		}
+		return UInt64(v)
+	case uint:
 		return UInt64(v)
 	case uint8:
 		return UInt64(v)
@@ -169,8 +252,14 @@ func AnyToUInt64(any Any) UInt64 {
 		return UInt64(v)
 
 	case float32:
+		if v < 0 {
+			v = 0
+		}
 		return UInt64(v)
 	case float64:
+		if v < 0 {
+			v = 0
+		}
 		return UInt64(v)
 	case string:
 		return String(v).ToUInt64()
@@ -194,6 +283,8 @@ func AnyToInt64(any Any) Int64 {
 	case Int32:
 		return Int64(v)
 	case Int64:
+		return Int64(v)
+	case UInt:
 		return Int64(v)
 	case UInt8:
 		return Int64(v)
@@ -221,6 +312,8 @@ func AnyToInt64(any Any) Int64 {
 	case int32:
 		return Int64(v)
 	case int64:
+		return Int64(v)
+	case uint:
 		return Int64(v)
 	case uint8:
 		return Int64(v)

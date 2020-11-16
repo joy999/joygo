@@ -63,7 +63,7 @@ func (this UInt8) ToJSON() *JSON {
 }
 
 func (this UInt8) ToString() String {
-	return String(strconv.FormatUint(this.ToUInt64().ToNative(), 8))
+	return String(strconv.FormatUint(this.ToUInt64().ToNative(), 10))
 }
 
 func (this UInt8) ToJSONString() (String, error) {

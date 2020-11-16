@@ -63,7 +63,7 @@ func (this Int32) ToJSON() *JSON {
 }
 
 func (this Int32) ToString() String {
-	return String(strconv.FormatInt(this.ToInt64().ToNative(), 32))
+	return String(strconv.FormatInt(this.ToInt64().ToNative(), 10))
 }
 
 func (this Int32) ToJSONString() (String, error) {

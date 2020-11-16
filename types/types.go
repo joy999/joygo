@@ -4,7 +4,7 @@ type Any interface{}
 
 type Byte byte
 
-type Bytes []Byte
+type Bytes []byte
 
 type Int64 int64
 

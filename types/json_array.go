@@ -9,8 +9,8 @@ func NewJSONArray() JSONArray {
 	return o
 }
 
-func (this *JSONArray) Push(item Any) {
-	*this = append(*this, item)
+func (this *JSONArray) Push(item ...Any) {
+	*this = append(*this, item...)
 }
 
 func (this *JSONArray) Pop() *JSON {
