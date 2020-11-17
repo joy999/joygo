@@ -32,6 +32,10 @@ func (this JSON) ToInt64() Int64 {
 	return AnyToInt64(this.Any)
 }
 
+func (this JSON) ToUInt() UInt {
+	return UInt(this.ToUInt64())
+}
+
 func (this JSON) ToUInt8() UInt8 {
 	return UInt8(this.ToUInt64())
 }
@@ -89,5 +93,5 @@ func (this *JSON) Set(any Any) {
 }
 
 func (this *JSON) Assign(any Any) {
-	this.Any = any
+	this.Set(any)
 }

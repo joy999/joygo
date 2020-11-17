@@ -47,8 +47,8 @@ func (str *String) Write(p []byte) (n int, err error) {
 }
 
 //转为字节数组
-func (str String) ToBytes() []byte {
-	return []byte(str)
+func (str String) ToBytes() Bytes {
+	return Bytes([]byte(str))
 }
 
 /**
@@ -174,7 +174,11 @@ func (str String) Explode(sep string) StringArray {
 }
 
 func (this String) IsSame(s string) bool {
-	return this.ToNative() == s
+	if this.ToNative() == s {
+		return true
+	} else {
+		return false
+	}
 }
 
 func (this String) TrimSpace() String {

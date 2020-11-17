@@ -26,15 +26,27 @@ func (this Int16) ToInt8() Int8 {
 	return Int8(this)
 }
 func (this Int16) ToUInt64() UInt64 {
+	if this < 0 {
+		this = 0
+	}
 	return UInt64(this)
 }
 func (this Int16) ToUInt32() UInt32 {
+	if this < 0 {
+		this = 0
+	}
 	return UInt32(this)
 }
 func (this Int16) ToUInt16() UInt16 {
+	if this < 0 {
+		this = 0
+	}
 	return UInt16(this)
 }
 func (this Int16) ToUInt8() UInt8 {
+	if this < 0 {
+		this = 0
+	}
 	return UInt8(this)
 }
 func (this Int16) ToFloat64() Float64 {
@@ -47,6 +59,9 @@ func (this Int16) ToInt() Int {
 	return Int(this)
 }
 func (this Int16) ToUInt() UInt {
+	if this < 0 {
+		this = 0
+	}
 	return UInt(this)
 }
 func (this Int16) ToFloat() Float {

@@ -38,7 +38,7 @@ func (this *JSONArray) Remove(index Int) {
 	if index <= 0 {
 		*this = (*this)[1:]
 	} else if index >= len-1 {
-		*this = (*this)[:len]
+		*this = (*this)[:len-1]
 	} else {
 		*this = append((*this)[:index], (*this)[index+1:]...)
 	}

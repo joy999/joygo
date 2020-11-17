@@ -35,29 +35,17 @@ func AnyToString(any Any) String {
 	case Bytes:
 		return value.ToString()
 	case *JSON:
-		if v, err := value.ToJSONString(); err == nil {
-			return v
-		} else {
-			return ""
-		}
+		v, _ := value.ToJSONString()
+		return v
 	case JSON:
-		if v, err := value.ToJSONString(); err == nil {
-			return v
-		} else {
-			return ""
-		}
+		v, _ := value.ToJSONString()
+		return v
 	case JSONArray:
-		if v, err := value.ToJSONString(); err == nil {
-			return v
-		} else {
-			return ""
-		}
+		v, _ := value.ToJSONString()
+		return v
 	case JSONMap:
-		if v, err := value.ToJSONString(); err == nil {
-			return v
-		} else {
-			return ""
-		}
+		v, _ := value.ToJSONString()
+		return v
 	case int:
 		return Int(value).ToString()
 	case int8:
@@ -88,6 +76,14 @@ func AnyToString(any Any) String {
 		return String(value)
 	case nil:
 		return String("")
+	case Bool:
+		return AnyToString(value.ToNative())
+	case bool:
+		if value {
+			return "true"
+		} else {
+			return "false"
+		}
 	default:
 		return String(fmt.Sprintf("%T", value))
 	}
@@ -145,13 +141,16 @@ func AnyToFloat64(any Any) Float64 {
 		return Float64(value)
 	case uint64:
 		return Float64(value)
-
 	case float32:
 		return Float32(value).ToString().ToFloat64()
 	case float64:
 		return Float64(value)
 	case string:
 		return String(value).ToFloat64()
+	case Bool:
+		return value.ToFloat64()
+	case bool:
+		return AnyToFloat64(Bool(value))
 	default:
 		return Float64(0)
 	}
@@ -263,6 +262,10 @@ func AnyToUInt64(any Any) UInt64 {
 		return UInt64(v)
 	case string:
 		return String(v).ToUInt64()
+	case Bool:
+		return v.ToUInt64()
+	case bool:
+		return AnyToUInt64(Bool(v))
 	default:
 		return UInt64(0)
 	}
@@ -300,7 +303,6 @@ func AnyToInt64(any Any) Int64 {
 		return Int64(v)
 	case Float64:
 		return Int64(v)
-
 	case String:
 		return v.ToInt64()
 	case int:
@@ -329,6 +331,10 @@ func AnyToInt64(any Any) Int64 {
 		return Int64(v)
 	case string:
 		return String(v).ToInt64()
+	case Bool:
+		return v.ToInt64()
+	case bool:
+		return AnyToInt64(Bool(v))
 	default:
 		return Int64(0)
 	}
@@ -376,6 +382,26 @@ func AnyToJSONArray(any Any) JSONArray {
 			ret.Push(Any(v))
 		}
 		return ret
+	case *[]Any:
+		return AnyToJSONArray(*value)
+	case []Any:
+		ret := make(JSONArray, 0)
+		for _, v := range value {
+			ret.Push(v)
+		}
+		return ret
+	case JSONMap:
+		ret := make(JSONArray, 0, len(value)*2)
+		for k, v := range value {
+			ret.Push(k, v)
+		}
+		return ret
+	case *JSONMap:
+		ret := make(JSONArray, 0, len(*value)*2)
+		for k, v := range *value {
+			ret.Push(k, v)
+		}
+		return ret
 	default:
 		return JSONArray{}
 	}
@@ -389,6 +415,30 @@ func AnyToJSONMapPtr(any Any) *JSONMap {
 	switch value := any.(type) {
 	case *JSONMap:
 		return value
+	case JSONArray:
+		ret := make(JSONMap, 0)
+		for k, v := range value {
+			ret[Int(k).ToString()] = v
+		}
+		return &ret
+	case *JSONArray:
+		return AnyToJSONMapPtr(AnyToJSONArray(value))
+	case []JSON:
+		return AnyToJSONMapPtr(AnyToJSONArray(value))
+	case *[]JSON:
+		return AnyToJSONMapPtr(AnyToJSONArray(value))
+	case []*JSON:
+		return AnyToJSONMapPtr(AnyToJSONArray(value))
+	case *[]*JSON:
+		return AnyToJSONMapPtr(AnyToJSONArray(value))
+	case []Any:
+		return AnyToJSONMapPtr(AnyToJSONArray(value))
+	case *[]Any:
+		return AnyToJSONMapPtr(AnyToJSONArray(value))
+	case []interface{}:
+		return AnyToJSONMapPtr(AnyToJSONArray(value))
+	case *[]interface{}:
+		return AnyToJSONMapPtr(AnyToJSONArray(value))
 	case *map[String]JSON:
 		ret := make(JSONMap, 0)
 		for k, v := range *value {

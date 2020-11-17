@@ -53,3 +53,7 @@ func (this JSONMap) ToJSONString() (String, error) {
 		return "", err
 	}
 }
+
+func (this *JSONMap) Clear() {
+	*this = make(JSONMap, 0)
+}

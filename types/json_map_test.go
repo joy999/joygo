@@ -41,3 +41,41 @@ func Test_JSONMapExists(t *testing.T) {
 		t.Log("Test_Exists: ", n1, n2, n3)
 	}
 }
+
+func Test_JSONMapGet(t *testing.T) {
+	m := NewJSONMap()
+	m.Set("a", 1)
+	m.Set("a1", String("abc"))
+	m.Set("b", JSONMap{`b`: 23.3})
+
+	if AnyToInt(m.Get("a")) != 1 {
+		t.Error("Test_JSONMapGet Failed!")
+	}
+	if AnyToString(m.Get("a1")) != "abc" {
+		t.Error("Test_JSONMapGet Failed!")
+	}
+	if m.Get("abc") != nil {
+		t.Error("Test_JSONMapGet Failed!")
+	}
+
+	if m.GetAsJSON("a").ToInt() != 1 {
+		t.Error("Test_JSONMapGetAsJSON Failed!")
+	}
+	if m.GetAsJSON("a1").ToString() != "abc" {
+		t.Error("Test_JSONMapGetAsJSON Failed!")
+	}
+	if m.GetAsJSON("abc") != nil {
+		t.Error("Test_JSONMapGetAsJSON Failed!")
+	}
+	m.Remove("abc")
+	m.Remove("a1")
+	m.Remove("b")
+
+	if j, _ := m.ToJSON().ToJSONString(); j != `{"a":1}` {
+		t.Error("Test_JSONMapToJSON Failed!")
+	}
+	m.Clear()
+	if j, _ := m.ToJSONString(); j != `{}` {
+		t.Error("Test_JSONMapToJSON Failed!")
+	}
+}
